@@ -1,4 +1,4 @@
-name: CI for Base Images
+name: CI for Python Hello World
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'hello-world/**'
+      - 'python-hello-world/**'
   pull_request:
     branches: [ "main" ]
 
@@ -17,7 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-python@v3
+
       - name: pre-commit
         uses: pre-commit/action@v3.0.0
   build:

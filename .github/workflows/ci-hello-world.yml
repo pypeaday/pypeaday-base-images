@@ -1,0 +1,36 @@
+name: CI for Hello World
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Run at 10 pm every day
+    - cron: '0 22 * * *'
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'python-hello-world/**'
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build the Hello World Docker image
+        run: docker build ./hello-world --file ./hello-world/Dockerfile --tag hello-world:$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER --tag hello-world:latest
+
+      - name: Run Docker Container
+        run: docker run hello-world
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [lint, build]
+    steps:
+      - name: echo
+        run: echo "DEPLOY SOMEWHERE"

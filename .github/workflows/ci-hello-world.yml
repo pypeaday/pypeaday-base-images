@@ -20,11 +20,14 @@ jobs:
       - uses: actions/checkout@v3
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./hello-world
     steps:
       - uses: actions/checkout@v3
 
       - name: Build the Hello World Docker image
-        run: docker build ./hello-world --file ./hello-world/Dockerfile --tag hello-world:$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER --tag hello-world:latest
+        run: docker build . --file ./Dockerfile --tag hello-world:$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER --tag hello-world:latest
 
       - name: Run Docker Container
         run: docker run hello-world

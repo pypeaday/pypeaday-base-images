@@ -3,8 +3,12 @@ name: Docker Image CI for Python Hello World
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - '/python-hello-world/**'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - '/python-hello-world/**'
 
 jobs:
 

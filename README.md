@@ -34,3 +34,7 @@ The `python-hello-world` directory is a basic `hatch` project to illustrate a fe
 2. Testing a Python application
 3. Testing a Python application in CI
 4. Linting Python code in CI
+
+## Pypeaday
+
+Starter for my personal "hello world" which is a dockerized python app you can open in the browser

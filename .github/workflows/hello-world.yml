@@ -1,6 +1,9 @@
 name: Docker Image CI for Docker Hello World
 
 on:
+  schedule:
+    # Run at 10 pm every day
+    - cron: '0 22 * * *'
   push:
     branches: [ "main" ]
     paths:

@@ -18,8 +18,12 @@ jobs:
       - uses: actions/setup-python@v3
       - name: pre-commit
         uses: pre-commit/action@v3.0.0
+      - name: dummy sleep
+        run: sleep 20
   build:
     runs-on: ubuntu-latest
+    # try to have build fail if lint fails but run both at the same time
+    if: ${{ job.status == 'success' }}
     steps:
       - uses: actions/checkout@v3
       - name: Build the Hello World Docker image

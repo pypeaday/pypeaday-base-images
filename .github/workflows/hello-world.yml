@@ -1,6 +1,7 @@
 name: Docker Image CI for Docker Hello World
 
 on:
+  workflow_dispatch:
   schedule:
     # Run at 10 pm every day
     - cron: '0 22 * * *'

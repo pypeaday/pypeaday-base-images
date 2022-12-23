@@ -38,3 +38,9 @@ jobs:
       - name: Run Docker Container
         if: contains(github.event.paths, '/python-hello-world/**')
         run: docker run python-hello-world
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [lint, build]
+    steps:
+      - name: echo
+        run: echo "DEPLOY SOMEWHERE"

@@ -9,6 +9,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'python-hello-world/**'
+      - '.github/workflows/ci-python-hello-world.yml'
   pull_request:
     branches: [ "main" ]
 

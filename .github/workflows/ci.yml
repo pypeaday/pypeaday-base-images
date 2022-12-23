@@ -24,19 +24,19 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Hello World Docker image
-        if: contains(github.event.paths, '/hello-world/**')
+        if: contains(github.event.paths, 'hello-world/**')
         run: docker build ./hello-world --file ./hello-world/Dockerfile --tag hello-world:$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER --tag hello-world:latest
 
       - name: Run Docker Container
-        if: contains(github.event.paths, '/hello-world/**')
+        if: contains(github.event.paths, 'hello-world/**')
         run: docker run python-hello-world
 
       - name: Build the Python Hello World Docker image
-        if: contains(github.event.paths, '/python-hello-world/**')
+        if: contains(github.event.paths, 'python-hello-world/**')
         run: docker build ./python-hello-world --file ./python-hello-world/Dockerfile --tag python-hello-world:$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER --tag python-hello-world:latest
 
       - name: Run Docker Container
-        if: contains(github.event.paths, '/python-hello-world/**')
+        if: contains(github.event.paths, 'python-hello-world/**')
         run: docker run python-hello-world
   deploy:
     runs-on: ubuntu-latest

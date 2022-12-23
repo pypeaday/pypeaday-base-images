@@ -10,7 +10,7 @@ requires-python = ">=3.7"
 license = "MIT"
 keywords = []
 authors = [
-  { name = "Pypeaday", email = "pypeaday@pm.me" },
+  { name = "Pypeaday", email = "github-base-images@pype.dev" },
 ]
 classifiers = [
   "Development Status :: 4 - Beta",

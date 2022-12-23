@@ -1,0 +1,20 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build ./hello-world --file ./hello-world/Dockerfile --tag hello-world:$(date +%s)
+    - name: Run Docker Container
+      run: docker run hello-world:$(date +%s)

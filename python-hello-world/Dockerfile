@@ -6,13 +6,13 @@ RUN apt-get update \
     # package-a \
     rm -r /var/lib/apt/lists/*
 
-
+# TODO: create a virtual environment that any of my python projects can build off of called "my-env" or something
 RUN python3 -m pip install pip --upgrade --no-cache-dir && python3 -m pip install hatch --no-cache-dir
 
 COPY . /app
 
 WORKDIR /app
 
-RUN hatch shell
+RUN hatch env create
 
 ENTRYPOINT ["hatch", "run", "main"]

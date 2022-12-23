@@ -1,6 +1,6 @@
 FROM alpine
 
-RUN apk update && apk upgrade -y && rm -rf /var/cache/apk/*
+RUN apk update && apk upgrade && rm -rf /var/cache/apk/*
 
 WORKDIR /app
 

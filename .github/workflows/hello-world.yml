@@ -7,8 +7,6 @@ on:
       - '/hello-world/**'
   pull_request:
     branches: [ "main" ]
-    paths:
-      - '/hello-world/**'
 
 jobs:
 

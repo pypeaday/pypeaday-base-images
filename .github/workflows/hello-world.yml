@@ -15,6 +15,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build ./hello-world --file ./hello-world/Dockerfile --tag hello-world:$GITHUB_RUN_ID-$GTHUB_RUN_NUMBER --tag hello-world:latest
+      run: docker build ./hello-world --file ./hello-world/Dockerfile --tag hello-world:$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER --tag hello-world:latest
     - name: Run Docker Container
       run: docker run hello-world

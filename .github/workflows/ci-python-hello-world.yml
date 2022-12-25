@@ -56,7 +56,7 @@ jobs:
         run: docker run python-hello-world
   push:
     runs-on: ubuntu-latest
-    needs: [lint, build]
+    needs: [lint, build, test]
     steps:
       - name: echo
         run: echo "push SOMEWHERE"

@@ -16,6 +16,9 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python-hello-world
     steps:
       - uses: actions/checkout@v3
 
@@ -23,19 +26,37 @@ jobs:
 
       - name: pre-commit
         uses: pre-commit/action@v3.0.0
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python-hello-world
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v3
+
+      - name: Install hatch
+        run: pip install hatch
+
+      - name: pytest
+        run: hatch run cov
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./python-hello-world
     steps:
       - uses: actions/checkout@v3
 
       - name: Build the Python Hello World Docker image
-        run: docker build ./python-hello-world --file ./python-hello-world/Dockerfile --tag python-hello-world:$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER --tag python-hello-world:latest
+        run: docker build . --file ./Dockerfile --tag python-hello-world:$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER --tag python-hello-world:latest
 
       - name: Run Docker Container
         run: docker run python-hello-world
-  deploy:
+  push:
     runs-on: ubuntu-latest
     needs: [lint, build]
     steps:
       - name: echo
-        run: echo "DEPLOY SOMEWHERE"
+        run: echo "push SOMEWHERE"

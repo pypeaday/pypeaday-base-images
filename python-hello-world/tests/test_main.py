@@ -1,3 +1,5 @@
+from typing import Union
+
 import pytest
 from python_hello_world import main
 
@@ -12,7 +14,12 @@ from python_hello_world import main
         ("a string", 69, "420", AssertionError),
     ],
 )
-def test_a_type_hinted_function(x, y, z, error):
+def test_a_type_hinted_function(
+    x: str,
+    y: int,
+    z: Union[int, float],
+    error: AssertionError,
+) -> None:
     if error is None:
         r = main.a_type_hinted_function(x, y, z)
         assert r["string argument"] == x
@@ -23,5 +30,5 @@ def test_a_type_hinted_function(x, y, z, error):
             main.a_type_hinted_function(x, y, z)
 
 
-def test_main():
+def test_main() -> None:
     assert main.main() == 0

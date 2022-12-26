@@ -7,7 +7,7 @@ import typer
 from rich import print
 
 
-def main():
+def main() -> int:
     """main."""
     print(
         f""""

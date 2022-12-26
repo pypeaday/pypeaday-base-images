@@ -65,9 +65,9 @@ jobs:
           build-args: |
             APP_VERSION=$GITHUB_REF_NAME-$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER
           tags: |
-            "pypeaday/base-images:python-hello-world-$GITHUB_REF_NAME-$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER"
-            "pypeaday/base-images:python-hello-world-latest"
-            "python-hello-world-latest"
+            pypeaday/base-images:python-hello-world-$GITHUB_REF_NAME-$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER
+            pypeaday/base-images:python-hello-world-latest
+            python-hello-world-latest
           outputs: type=docker,dest=/tmp/myimage.tar
 
       - name: Run Docker Container

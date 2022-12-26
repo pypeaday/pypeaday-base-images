@@ -66,7 +66,7 @@ jobs:
           context: ./python-hello-world
           file: ./python-hello-world/Dockerfile
           build-args: |
-            APP_VERSION=$GITHUB_REF_NAME-$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER
+            APP_VERSION=${{ github.ref }}-${{ github.run_id }}-${{ github.run_number }}
           tags: |
             python-hello-world-latest
           outputs: type=docker,dest=/tmp/myimage.tar

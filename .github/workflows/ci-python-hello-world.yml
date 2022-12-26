@@ -6,7 +6,7 @@ on:
     # Run at 10 pm every day
     - cron: '0 22 * * *'
   push:
-    branches: [ "main" ]
+    branches: [ "*" ]
     paths:
       - 'python-hello-world/**'
       - '.github/workflows/ci-python-hello-world.yml'
@@ -14,6 +14,11 @@ on:
     branches: [ "main" ]
 
 jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: See vars
+        run: echo ${{ github.ref }}
   lint:
     runs-on: ubuntu-latest
     defaults:
@@ -26,6 +31,13 @@ jobs:
 
       - name: pre-commit
         uses: pre-commit/action@v3.0.0
+
+      - name: Install hatch
+        run: pip install hatch
+
+      - name: mypy
+        run: hatch run mypy-hello-world
+
   test:
     runs-on: ubuntu-latest
     defaults:
@@ -41,22 +53,87 @@ jobs:
 
       - name: pytest
         run: hatch run cov
+
   build:
     runs-on: ubuntu-latest
+    env:
+      APP_VERSION: ${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
     defaults:
       run:
         working-directory: ./python-hello-world
     steps:
+      # Still need checkout to use path context in docker/build-push-action
       - uses: actions/checkout@v3
 
-      - name: Build the Python Hello World Docker image
-        run: docker build . --file ./Dockerfile --tag python-hello-world:$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER --tag python-hello-world:latest
+      # From https://docs.docker.com/build/ci/github-actions/examples/#share-built-image-between-jobs
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and export
+        uses: docker/build-push-action@v3
+        with:
+          context: ./python-hello-world
+          file: ./python-hello-world/Dockerfile
+          build-args: |
+            APP_VERSION=${{env.APP_VERSION}}
+          tags: |
+            python-hello-world-latest
+          outputs: type=docker,dest=/tmp/myimage.tar
 
       - name: Run Docker Container
-        run: docker run python-hello-world
+        run: |
+          docker load --input /tmp/myimage.tar
+          docker run --rm python-hello-world-latest
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: myimage
+          path: /tmp/myimage.tar
   push:
     runs-on: ubuntu-latest
+    env:
+      # NOTE: this is duplicated in the build step since GH Actions doesn't
+      # support setting env variables at the Workflow level that can be
+      # accessed in a Job
+      APP_VERSION: ${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
     needs: [lint, build, test]
     steps:
-      - name: echo
-        run: echo "push SOMEWHERE"
+      # From https://docs.docker.com/build/ci/github-actions/examples/#share-built-image-between-jobs
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: myimage
+          path: /tmp
+
+      - name: Load and tag image
+        run: |
+          docker load --input /tmp/myimage.tar
+          docker image ls -a
+          docker tag python-hello-world-latest pypeaday/dev-base-images:python-hello-world-${{env.APP_VERSION}}
+
+      - name: Push dev branch
+        run: |
+          docker push pypeaday/dev-base-images:python-hello-world-${{env.APP_VERSION}}
+        # TODO: More general if condition
+        if: ${{ github.ref == 'refs/heads/integration' }}
+
+      - name: Push main tag
+        run: |
+          docker push pypeaday/base-images:python-hello-world-${{env.APP_VERSION}}
+        if: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Push latest
+        run: |
+          docker tag python-hello-world-latest pypeaday/base-images:python-hello-world-latest
+          docker push pypeaday/base-images:python-hello-world-latest
+        if: ${{ github.ref == 'refs/heads/main' }}

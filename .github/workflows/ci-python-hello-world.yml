@@ -53,23 +53,57 @@ jobs:
         working-directory: ./python-hello-world
     steps:
       - uses: actions/checkout@v3
-
-      - name: Build the Python Hello World Docker image
-        run: |
-          docker build . \
-          -- build-arg APP_VERSION=$GITHUB_REF_NAME-$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER \
-          --file ./Dockerfile \
-          --tag pypeaday/base-images:python-hello-world-$GITHUB_REF_NAME-$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER \
-          --tag pypeaday/base-images:python-hello-world-latest \
-          --tag python-hello-world-latest
+      # From https://docs.docker.com/build/ci/github-actions/examples/#share-built-image-between-jobs
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build and export
+        uses: docker/build-push-action@v3
+        with:
+          context: ./python-hello-world
+          build-args: |
+            APP_VERSION=$GITHUB_REF_NAME-$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER
+          tags: |
+            "pypeaday/base-images:python-hello-world-$GITHUB_REF_NAME-$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER"
+            "pypeaday/base-images:python-hello-world-latest"
+            "python-hello-world-latest"
+          outputs: type=docker,dest=/tmp/myimage.tar
 
       - name: Run Docker Container
         run: docker run python-hello-world-latest
-
+      -
+        name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: myimage
+          path: /tmp/myimage.tar
   push:
     runs-on: ubuntu-latest
     needs: [lint, build, test]
     steps:
+      # From https://docs.docker.com/build/ci/github-actions/examples/#share-built-image-between-jobs
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      # -
+        # name: Login to Docker Hub
+        # uses: docker/login-action@v2
+        # with:
+        #   username: ${{ secrets.DOCKERHUB_USERNAME }}
+        #   password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: myimage
+          path: /tmp
+      -
+        name: Load image
+        run: |
+          docker load --input /tmp/myimage.tar
+          docker image ls -a
+
       - name: Push branch
         run: docker push pypeaday/base-images:python-hello-world-$GITHUB_REF_NAME-$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER
         if: ${{ github.ref == 'refs/heads/integration' }}

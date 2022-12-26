@@ -12,7 +12,7 @@ def main() -> int:
     print(
         f""""
         [bold red]APP VERSION[/bold red] =
-        [green]{os.environ.get('APP_VERSION', 'NONE')}[/green]:boom:
+        [green]{os.environ.get('BASE_VERSION', 'NONE')}[/green]:boom:
         """,
     )
     return 0

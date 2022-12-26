@@ -69,12 +69,13 @@ jobs:
             APP_VERSION=${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
           tags: |
             python-hello-world-latest
+            myimage:latest
           outputs: type=docker,dest=/tmp/myimage.tar
           load: true
 
       - name: Run Docker Container
         run: |
-          docker run --rm python-hello-world-latest
+          docker run --rm myimage:latest
       -
         name: Upload artifact
         uses: actions/upload-artifact@v3

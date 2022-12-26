@@ -48,6 +48,8 @@ jobs:
         run: hatch run cov
   build:
     runs-on: ubuntu-latest
+    env:
+      APP_VERSION: ${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
     defaults:
       run:
         working-directory: ./python-hello-world
@@ -66,7 +68,7 @@ jobs:
           context: ./python-hello-world
           file: ./python-hello-world/Dockerfile
           build-args: |
-            APP_VERSION=${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
+            APP_VERSION=$APP_VERSION
           tags: |
             python-hello-world-latest
           outputs: type=docker,dest=/tmp/myimage.tar

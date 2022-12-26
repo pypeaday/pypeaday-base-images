@@ -1,5 +1,7 @@
 import os
-from typing import Any, Dict, Union
+from typing import Any
+from typing import Dict
+from typing import Union
 
 import typer
 from rich import print
@@ -8,7 +10,10 @@ from rich import print
 def main():
     """main."""
     print(
-        f"[bold red]APP VERSION[/bold red] = [green]{os.environ.get('APP_VERSION', 'NO VERSION FOUND')}[/green] :boom:"
+        f""""
+        [bold red]APP VERSION[/bold red] =
+        [green]{os.environ.get('APP_VERSION', 'NONE')}[/green]:boom:
+        """,
     )
     return 0
 
@@ -20,19 +25,23 @@ def a_type_hinted_function(
 ) -> Dict[str, Any]:
     """Summary of a_type_hinted_function.
 
-    Type hints in Python enable safer and faster development with the help of the LSP.
+    Type hints in Python enable safer and faster development with
+    the help of the LSP.
     Note that types are not enforced by the interpreter at all...
-    ie. Type hinting doesn't affect the runtime of a script... they're hints, not law
+    ie. Type hinting doesn't affect the runtime of a script...
+    they're hints, not law
 
     Args:
         string_argument: An argument with type designated as str
         integer_argument: An argument with type designated as int
-        integer_or_float_argument: An argument that can be either an integer or a float
+        integer_or_float_argument: An argument that can be either
+                                    an integer or a float
     """
     assert isinstance(string_argument, str)
     assert isinstance(integer_argument, int)
     assert isinstance(integer_or_float_argument, int) or isinstance(
-        integer_or_float_argument, float
+        integer_or_float_argument,
+        float,
     )
     return {
         "example key": list(range(10)),

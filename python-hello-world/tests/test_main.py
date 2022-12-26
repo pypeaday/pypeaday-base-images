@@ -1,5 +1,4 @@
 import pytest
-
 from python_hello_world import main
 
 

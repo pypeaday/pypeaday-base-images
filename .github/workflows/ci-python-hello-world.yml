@@ -86,6 +86,11 @@ jobs:
           path: /tmp/myimage.tar
   push:
     runs-on: ubuntu-latest
+    env:
+      # NOTE: this is duplicated in the build step since GH Actions doesn't
+      # support setting env variables at the Workflow level that can be
+      # accessed in a Job
+      APP_VERSION: ${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
     needs: [lint, build, test]
     steps:
       # From https://docs.docker.com/build/ci/github-actions/examples/#share-built-image-between-jobs

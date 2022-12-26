@@ -70,10 +70,10 @@ jobs:
           tags: |
             python-hello-world-latest
           outputs: type=docker,dest=/tmp/myimage.tar
+          load: true
 
       - name: Run Docker Container
         run: |
-          docker load --input /tmp/myimage.tar
           docker run python-hello-world-latest
       -
         name: Upload artifact

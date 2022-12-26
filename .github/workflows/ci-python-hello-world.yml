@@ -119,16 +119,17 @@ jobs:
         run: |
           docker load --input /tmp/myimage.tar
           docker image ls -a
-          docker tag python-hello-world-latest pypeaday/dev-base-images:python-hello-world-${{env.APP_VERSION}}
 
       - name: Push dev branch
         run: |
+          docker tag python-hello-world-latest pypeaday/dev-base-images:python-hello-world-${{env.APP_VERSION}}
           docker push pypeaday/dev-base-images:python-hello-world-${{env.APP_VERSION}}
         # TODO: More general if condition
         if: ${{ github.ref == 'refs/heads/integration' }}
 
       - name: Push main tag
         run: |
+          docker tag python-hello-world-latest pypeaday/base-images:python-hello-world-${{env.APP_VERSION}}
           docker push pypeaday/base-images:python-hello-world-${{env.APP_VERSION}}
         if: ${{ github.ref == 'refs/heads/main' }}
 

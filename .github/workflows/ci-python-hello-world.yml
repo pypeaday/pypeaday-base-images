@@ -31,6 +31,11 @@ jobs:
 
       - name: pre-commit
         uses: pre-commit/action@v3.0.0
+
+      - name: mypy
+        run: |
+          pip install mypy
+          mypy python_hello_world
   test:
     runs-on: ubuntu-latest
     defaults:

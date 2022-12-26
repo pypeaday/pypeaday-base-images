@@ -74,7 +74,7 @@ jobs:
 
       - name: Run Docker Container
         run: |
-          docker run python-hello-world-latest
+          docker run --rm python-hello-world-latest
       -
         name: Upload artifact
         uses: actions/upload-artifact@v3

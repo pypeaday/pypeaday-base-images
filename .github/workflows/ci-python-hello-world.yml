@@ -3,8 +3,8 @@ name: CI for Python Hello World
 on:
   workflow_dispatch:
   schedule:
-    # Run at 10 pm every day
-    - cron: '0 22 * * *'
+    # Run at 10 pm on the second of every month
+    - cron: '0 22 2 * *'
   push:
     branches: [ "*" ]
     paths:

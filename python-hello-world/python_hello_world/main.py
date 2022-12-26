@@ -7,8 +7,9 @@ from rich import print
 
 def main():
     """main."""
-    print("[bold red]Alert![/bold red] [green]Portal gun[/green] shooting! :boom:")
-    print(f"APP VERSION = {os.environ.get('APP_VERSION', 'NO VERSION FOUND')}")
+    print(
+        f"[bold red]APP VERSION[/bold red] = [green]{os.environ.get('APP_VERSION', 'NO VERSION FOUND')}[/green] :boom:"
+    )
     return 0
 
 

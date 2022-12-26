@@ -2,7 +2,7 @@ FROM python:3.10-slim
 
 ARG APP_VERSION
 
-ENV APP_VERSION=APP_VERSION
+ENV APP_VERSION=$APP_VERSION
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive \

@@ -68,7 +68,7 @@ jobs:
           context: ./python-hello-world
           file: ./python-hello-world/Dockerfile
           build-args: |
-            APP_VERSION=$APP_VERSION
+            APP_VERSION=${{env.APP_VERSION}}
           tags: |
             python-hello-world-latest
           outputs: type=docker,dest=/tmp/myimage.tar
@@ -114,17 +114,17 @@ jobs:
         run: |
           docker load --input /tmp/myimage.tar
           docker image ls -a
-          docker tag python-hello-world-latest pypeaday/dev-base-images:python-hello-world-$APP_VERSION
+          docker tag python-hello-world-latest pypeaday/dev-base-images:python-hello-world-${{env.APP_VERSION}}
 
 
       - name: Push dev branch
         run: |
-          docker push pypeaday/dev-base-images:python-hello-world-$APP_VERSION
+          docker push pypeaday/dev-base-images:python-hello-world-${{env.APP_VERSION}}
         # TODO: More general if condition
         if: ${{ github.ref == 'refs/heads/integration' }}
       - name: Push main tag
         run: |
-          docker push pypeaday/base-images:python-hello-world-$APP_VERSION
+          docker push pypeaday/base-images:python-hello-world-${{env.APP_VERSION}}
         if: ${{ github.ref == 'refs/heads/main' }}
       - name: Push latest
         run: |

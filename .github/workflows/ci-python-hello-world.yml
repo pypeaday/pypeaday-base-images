@@ -52,7 +52,6 @@ jobs:
       run:
         working-directory: ./python-hello-world
     steps:
-      - uses: actions/checkout@v3
       # From https://docs.docker.com/build/ci/github-actions/examples/#share-built-image-between-jobs
       -
         name: Set up Docker Buildx

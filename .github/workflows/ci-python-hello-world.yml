@@ -109,11 +109,17 @@ jobs:
           docker image ls -a
 
       - name: Push branch
-        run: docker push python-hello-world-latest pypeaday/base-images:python-hello-world-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
+        run: |
+          docker tag python-hello-world-latest pypeaday/base-images:python-hello-world-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
+          docker pypeaday/base-images:python-hello-world-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
         if: ${{ github.ref == 'refs/heads/integration' }}
       - name: Push main tag
-        run: docker push python-hello-world-latest pypeaday/base-images:python-hello-world-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
+        run: |
+          docker tag python-hello-world-latest pypeaday/base-images:python-hello-world-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
+          docker pypeaday/base-images:python-hello-world-${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
         if: ${{ github.ref == 'refs/heads/main' }}
       - name: Push latest
-        run: docker push python-hello-world-latest pypeaday/base-images:python-hello-world-latest
+        run: |
+          docker tag python-hello-world-latest pypeaday/base-images:python-hello-world-latest
+          docker pypeaday/base-images:python-hello-world-latest
         if: ${{ github.ref == 'refs/heads/main' }}

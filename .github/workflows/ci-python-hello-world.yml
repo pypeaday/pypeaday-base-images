@@ -60,7 +60,8 @@ jobs:
           --file ./Dockerfile \
           --tag pypeaday/base-images:python-hello-world-$GITHUB_RUN_ID-$GITHUB_RUN_NUMBER \
           --tag pypeaday/base-images:python-hello-world-$GITHUB_REF_NAME-$GITHUB_RUN_NUMBER \
-          --tag pypeaday/base-images:python-hello-world-latest
+          --tag pypeaday/base-images:python-hello-world-latest \
+          --tag python-hello-world-latest
 
       - name: Run Docker Container
         run: docker run python-hello-world-latest

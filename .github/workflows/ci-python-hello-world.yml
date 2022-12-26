@@ -32,10 +32,12 @@ jobs:
       - name: pre-commit
         uses: pre-commit/action@v3.0.0
 
+      - name: Install hatch
+        run: pip install hatch
+
       - name: mypy
-        run: |
-          pip install mypy
-          mypy python_hello_world
+        run: hatch run mypy-hello-world
+
   test:
     runs-on: ubuntu-latest
     defaults:
@@ -51,6 +53,7 @@ jobs:
 
       - name: pytest
         run: hatch run cov
+
   build:
     runs-on: ubuntu-latest
     env:

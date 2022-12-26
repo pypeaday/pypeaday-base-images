@@ -38,11 +38,13 @@ path = "python_hello_world/__about__.py"
 dependencies = [
   "pytest",
   "pytest-cov",
+  "mypy"
 ]
 [tool.hatch.envs.default.scripts]
 cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=python_hello_world --cov=tests {args}"
 no-cov = "cov --no-cov {args}"
 main = "python3 python_hello_world/main.py"
+mypy-hello-world = "mypy python_hello_world"
 
 [[tool.hatch.envs.test.matrix]]
 python = ["37", "38", "39", "310", "311"]

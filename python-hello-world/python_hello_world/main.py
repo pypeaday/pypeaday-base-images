@@ -1,5 +1,5 @@
 import os
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, Union
 
 import typer
 from rich import print
@@ -16,7 +16,7 @@ def a_type_hinted_function(
     string_argument: str,
     integer_argument: int,
     integer_or_float_argument: Union[int, float],
-) -> Dict[str, List[Any]]:
+) -> Dict[str, Any]:
     """Summary of a_type_hinted_function.
 
     Type hints in Python enable safer and faster development with the help of the LSP.

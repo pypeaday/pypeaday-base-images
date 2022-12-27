@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "example_markata_blog"
+name = "markata_docs"
 
 description = "Docs for my Base Images Repo, also an example of CI and Dockerizing a website"
 
@@ -21,7 +21,7 @@ dependencies = ['markata~=0.5.0.dev0']
 dynamic = ["version"]
 
 [tool.hatch.version]
-path = "example_markata_blog/__about__.py"
+path = "markata_docs/__about__.py"
 
 [tool.hatch.envs.default]
 dependencies = [

@@ -37,10 +37,21 @@ def a_type_hinted_function(
         integer_or_float_argument: An argument that can be either
                                     an integer or a float
     """
+
+    if not isinstance(integer_argument, int):
+        msg = f""""
+            Value for {integer_argument=} was of type {type(integer_argument)}
+            but an int is required
+            """
+        raise ValueError(msg)
+
+    v = integer_argument + 2
+
     return {
         "example key": list(range(10)),
         "string argument": string_argument,
         "integer argument": integer_argument,
+        "v": v,
         "integer or float argument": integer_or_float_argument,
     }
 

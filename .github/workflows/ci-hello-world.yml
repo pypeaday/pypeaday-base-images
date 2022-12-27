@@ -41,7 +41,7 @@ jobs:
           build-args: |
             BASE_VERSION=${{env.BASE_VERSION}}
           tags: |
-            hello-world-latest
+            hello-world-alpine-latest
           outputs: type=docker,dest=/tmp/myimage.tar
 
       - name: Run Docker Container

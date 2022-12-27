@@ -3,6 +3,7 @@ date: 2022-12-04 1:00:00
 title: Hello World
 published: True
 tags:
+  - quick
   - home
 
 ---

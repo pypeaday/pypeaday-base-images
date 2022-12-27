@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Build Example Markata Blog in CI
+name: Build Docs with Markata in CI
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
@@ -10,7 +10,7 @@ on:
       # do not trigger ci when pushing gh-pages step
       - "!prod-markata"
     paths:
-      - 'example-markata-blog/**'
+      - 'markata-docs/**'
       - '.github/workflows/ci-markata-blog.yml'
   pull_request:
     branches:
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./example-markata-blog
+        working-directory: ./markata-docs
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -46,11 +46,11 @@ jobs:
         with:
           # you can choose the target branch of your choice
           target_branch: prod-markata
-          build_dir: ./example-markata-blog/markout
+          build_dir: ./markata-docs/markout
           jekyll: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  build-docker:
+  docker:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     env:
@@ -72,12 +72,12 @@ jobs:
       - name: Build and export
         uses: docker/build-push-action@v3
         with:
-          context: ./example-markata-blog
-          file: ./example-markata-blog/Dockerfile
+          context: ./markata-docs
+          file: ./markata-docs/Dockerfile
           build-args: |
             BASE_VERSION=${{env.BASE_VERSION}}
           tags: |
-            example-markata-blog-latest
+            markata-docs-latest
           outputs: type=docker,dest=/tmp/myimage.tar
 
       - name: Upload artifact
@@ -85,3 +85,52 @@ jobs:
         with:
           name: myimage
           path: /tmp/myimage.tar
+
+  push:
+    runs-on: ubuntu-latest
+    env:
+      # NOTE: this is duplicated in the build step since GH Actions doesn't
+      # support setting env variables at the Workflow level that can be
+      # accessed in a Job
+      BASE_VERSION: ${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
+    needs: [lint, build, test]
+    steps:
+      # From https://docs.docker.com/build/ci/github-actions/examples/#share-built-image-between-jobs
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: myimage
+          path: /tmp
+
+      - name: Load and tag image
+        run: |
+          docker load --input /tmp/myimage.tar
+          docker image ls -a
+
+      - name: Push dev branch
+        run: |
+          docker tag markata-docs-latest pypeaday/dev-base-images:markata-docs-${{env.BASE_VERSION}}
+          docker push pypeaday/dev-base-images:markata-docs-${{env.BASE_VERSION}}
+        # TODO: More general if condition
+        if: ${{ github.ref == 'refs/heads/integration' }}
+
+      - name: Push main tag
+        run: |
+          docker tag markata-docs-latest pypeaday/base-images:markata-docs-${{env.BASE_VERSION}}
+          docker push pypeaday/base-images:markata-docs-${{env.BASE_VERSION}}
+        if: ${{ github.ref == 'refs/heads/main' }}
+
+      - name: Push latest
+        run: |
+          docker tag markata-docs-latest pypeaday/base-images:markata-docs-latest
+          docker push pypeaday/base-images:markata-docs-latest
+        if: ${{ github.ref == 'refs/heads/main' }}

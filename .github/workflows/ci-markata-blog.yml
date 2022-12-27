@@ -61,6 +61,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: pwd
+        run: echo $PWD
+
       - name: run ls
         run: ls -alh
 

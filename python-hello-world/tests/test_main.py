@@ -32,3 +32,12 @@ def test_a_type_hinted_function(
 
 def test_main() -> None:
     assert main.main() == 0
+
+
+@pytest.mark.skip(reason="Example of skipping a pytest test")
+def test_will_be_skipped():
+    ...
+
+
+def test_will_also_be_skipped():
+    pytest.skip("Skipping imperatively")

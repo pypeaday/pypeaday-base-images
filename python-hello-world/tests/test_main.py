@@ -26,7 +26,7 @@ def test_a_type_hinted_function(
         assert r["integer argument"] == y
         assert r["integer or float argument"] == z
     else:
-        with pytest.raises(error):
+        with pytest.raises(ValueError):
             main.a_type_hinted_function(x, y, z)
 
 

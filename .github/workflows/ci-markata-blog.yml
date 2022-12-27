@@ -53,9 +53,6 @@ jobs:
   docker:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./example-markata-blog
     env:
       BASE_VERSION: ${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
     # Steps represent a sequence of tasks that will be executed as part of the job

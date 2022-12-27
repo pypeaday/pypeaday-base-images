@@ -1,6 +1,7 @@
 from typing import Union
 
 import pytest
+
 from python_hello_world import main
 
 

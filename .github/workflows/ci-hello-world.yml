@@ -62,7 +62,7 @@ jobs:
       # support setting env variables at the Workflow level that can be
       # accessed in a Job
       BASE_VERSION: ${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
-    needs: [lint, build, test]
+    needs: [lint, build]
     steps:
       # From https://docs.docker.com/build/ci/github-actions/examples/#share-built-image-between-jobs
       - name: Set up Docker Buildx

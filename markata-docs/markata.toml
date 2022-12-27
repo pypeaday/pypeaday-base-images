@@ -45,17 +45,17 @@ disabled_hooks = [
 ## Site Config
 url = "https://pypeaday.github.io/pypeaday-base-images"
 description = "Docs for my Base Images Repo, also an example of CI and Dockerizing a website"
-title = "Example Markata Blog"
+title = "Docs for Pypeaday's Base Images"
 rss_description = "Docs for my Base Images Repo, also an example of CI and Dockerizing a website"
 author_name = "Pypeaday"
 author_email = "base-images@pype.dev"
 
 ## PWA config
-site_name = "Example Markata Blog"
+site_name = "Pypeaday Base Images Docs"
 theme_color = "#322D39"
 background_color = "#B73CF6"
 start_url = "/"
-short_name = "Example Markata Blog"
+short_name = "Docs"
 display = "minimal-ui"
 icon = "icon.png"
 
@@ -187,7 +187,7 @@ content = "Pypeaday"
 
 [[markata.head.meta]]
 name = "og:site_name"
-content = "Example Markata Blog"
+content = "Pypeaday Base Image Docs"
 
 
 [[markata.head.meta]]

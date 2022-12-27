@@ -80,12 +80,6 @@ jobs:
             example-markata-blog-latest
           outputs: type=docker,dest=/tmp/myimage.tar
 
-      - name: Run Docker Container
-        run: |
-          docker load --input /tmp/myimage.tar
-          docker run --rm example-markata-blog-latest
-
-
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:

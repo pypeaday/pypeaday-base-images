@@ -6,7 +6,10 @@ on:
     # Run at 10 pm on the second of every month
     - cron: '0 22 2 * *'
   push:
-    branches: [ "*" ]
+    branches:
+      - "*"
+      # do not trigger ci when pushing gh-pages step
+      - "!prod-markata"
     paths:
       - 'hello-world/**'
       - '.github/workflows/ci-hello-world.yml'
@@ -18,6 +21,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+
+      - name: pre-commit
+        uses: pre-commit/action@v3.0.0
   build:
     runs-on: ubuntu-latest
     env:
@@ -41,7 +48,7 @@ jobs:
           build-args: |
             BASE_VERSION=${{env.BASE_VERSION}}
           tags: |
-            hello-world-latest
+            hello-world-alpine-latest
           outputs: type=docker,dest=/tmp/myimage.tar
 
       - name: Run Docker Container
@@ -62,7 +69,7 @@ jobs:
       # support setting env variables at the Workflow level that can be
       # accessed in a Job
       BASE_VERSION: ${{ github.ref_name }}-${{ github.run_id }}-${{ github.run_number }}
-    needs: [lint, build, test]
+    needs: [lint, build]
     steps:
       # From https://docs.docker.com/build/ci/github-actions/examples/#share-built-image-between-jobs
       - name: Set up Docker Buildx

@@ -1,0 +1,11 @@
+# Changes here will be overwritten by Copier
+_commit: v2
+_src_path: git+https://github.com/WaylonWalker/markata-blog-starter
+author_email: base-images@pype.dev
+author_fullname: Pypeaday
+author_twitter: '@pypeaday'
+description: Docs for my Base Images Repo, also an example of CI and Dockerizing a
+    website
+project_name: Docs for Pypeaday's Base Images
+python_package_import_name: markata_docs
+url: https://pypeaday.github.io/pypeaday-base-images

@@ -11,7 +11,7 @@ on:
       - "!prod-markata"
     paths:
       - 'markata-docs/**'
-      - '.github/workflows/ci-markata-blog.yml'
+      - '.github/workflows/ci-markata-docs.yml'
   pull_request:
     branches:
       - "main"

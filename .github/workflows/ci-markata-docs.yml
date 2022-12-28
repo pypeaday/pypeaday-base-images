@@ -53,6 +53,9 @@ jobs:
       - name: build with markata
         run: hatch run build
 
+      - name: echo working directory
+        run: echo $PWD
+
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact

@@ -6,7 +6,10 @@ on:
     # Run at 10 pm on the second of every month
     - cron: '0 22 2 * *'
   push:
-    branches: [ "*" ]
+    branches:
+      - "*"
+      # do not trigger ci when pushing gh-pages step
+      - "!prod-markata"
     paths:
       - 'hello-world/**'
       - '.github/workflows/ci-hello-world.yml'

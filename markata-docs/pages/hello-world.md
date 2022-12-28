@@ -51,7 +51,7 @@ sense, otherwise we'd have to write a little bash - examples below
           context: ./hello-world
           file: ./hello-world/alpine.Dockerfile
           build-args: |
-            BASE_VERSION=${{env.BASE_VERSION}}
+            BASE_VERSION="env.BASE_VERSION"
           tags: |
             hello-world-alpine-latest
           outputs: type=docker,dest=/tmp/myimage.tar

@@ -17,9 +17,21 @@ on:
       - "main"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
+  build-and-deploy:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     defaults:
@@ -41,15 +53,26 @@ jobs:
       - name: build with markata
         run: hatch run build
 
-      - name: GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v3.0.0
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          # you can choose the target branch of your choice
-          target_branch: prod-markata
-          build_dir: ./markata-docs/markout
-          jekyll: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Upload entire repository
+          path: './markata-docs/markout'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+
+      # - name: GitHub Pages
+      #   uses: crazy-max/ghaction-github-pages@v3.0.0
+      #   with:
+      #     # you can choose the target branch of your choice
+      #     target_branch: prod-markata
+      #     build_dir: ./markata-docs/markout
+      #     jekyll: false
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   docker:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
